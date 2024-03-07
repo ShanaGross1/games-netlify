@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black fs-4 border-bottom box-shadow mb-3">
+            <div class="container-fluid" style="background-color:black">
+                <a class="navbar-brand text-white fs-3" href="/">Games R Us</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="/">Home</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="modal fade" data-bs-backdrop="static" id="level-modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">Mastermind</h1>
+                        </div>
+                        <div class="modal-body">
+                            <h4> Welcome to Mastermind!</h4>
+                            To ensure your utmost enjoyment, please choose your game preference below.
+                            <br />
+                            <br />
+                            Best of luck!
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary game-level" name="doubles" data-bs-dismiss="modal">Allow doubles</button>
+                            <button class="btn btn-primary game-level" name="no-doubles" data-bs-dismiss="modal">Play without doubles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <body style="background-color: #182c6e">
+                <div class="container text-center">
+                    <h1 style="color: white; font-size:45px">MASTERMIND</h1>
+                    <div id="show-setup" class="mb-5 mt-4">
+                        <h3 class="text-white" id="message"></h3>
+                    </div>
+                    <div class="row; d-inline-block; choiceColors" style="margin-bottom:30px">
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:red"> </button>
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:orange"> </button>
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:yellow"> </button>
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:green"> </button>
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:blue"> </button>
+                        <button style="width:35px; height:35px; margin-right:5px; background-color:purple"> </button>
+                    </div>
+                    <div id="game-body">
+                    </div>
+                </div>
+            </body>
+        </main>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="js/mastermind.js" asp-append-version="true"></script>
+</body>
+</html>
