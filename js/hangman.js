@@ -1,5 +1,6 @@
 $(() => {
-    const wordsToChooseFrom = ['BEVERAGE', 'SYMPHONY', 'ATTITUDE', 'CONTROL', 'KETCHUP', 'SPRINKLE', 'FLOWER', 'MAGIC', 'COMPUTER', 'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT'];
+    const wordsToChooseFrom = ['BEVERAGE', 'SYMPHONY', 'ATTITUDE', 'CONTROL', 'KETCHUP', 'SPRINKLE', 'FLOWER', 'MAGIC', 'COMPUTER', 'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT'
+    'DEPOSIT', 'KNOW', 'SCARED', 'BRUSH', 'PHONE', 'ENJOY', 'STYLE', 'FOLD', 'BUILD', 'ACTION', 'METHOD',''];
     const hangManWord = wordsToChooseFrom[Math.floor(Math.random() * wordsToChooseFrom.length)].split('')
 
     printLetterButtons()
