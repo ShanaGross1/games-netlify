@@ -32,17 +32,15 @@ $(() => {
 
     function formSetUp() {
         for (let i = 0; i < hangManWord.length; i++) {
-
             $("#letters").append(`<button class="border-0" style="border-bottom: 7px solid black !important; background-color:transparent; color:lightgreen; margin-right:20px; font-size:55px; height: 71px; width:70px"></button>`)
         }
     }
 
     function printLetterButtons() {
 
-        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        //let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-        for (let i = 0; i < letters.length; i++) {
-            console.log('hi')
+        for (let i = 0; i < "ABCDEFGHIJKLMNOPQRSTUVWXYZ".length; i++) {      
             $("#alphabet").append(`<button class="button-letter" style="background-color: lightgreen; width:45px;  font-size: 28px;height:60px; border-radius: 10px;">${letters[i]}</button>`)
         }
     }
