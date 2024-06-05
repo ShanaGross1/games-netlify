@@ -1,5 +1,6 @@
 $(() => {
-    const wordsToChooseFrom = ['YUMMY','BEVERAGE', 'SYMPHONY', 'ATTITUDE', 'CONTROL', 'KETCHUP', 'SPRINKLE', 'FLOWER', 'MAGIC', 'COMPUTER', 'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT'];
+    const wordsToChooseFrom = ['YUMMY','BEVERAGE', 'SYMPHONY', 'ATTITUDE', 'CONTROL', 'KETCHUP', 'SPRINKLE', 'FLOWER', 'MAGIC', 'COMPUTER', 
+    'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT', 'AWESOME', 'MOSQUITO', 'PLACEMAT', 'STYLE','AQUIRE', 'SQUIRT', 'FILTHY','GHOST','GRASSHOPPER'];
     const hangManWord = wordsToChooseFrom[Math.floor(Math.random() * wordsToChooseFrom.length)].split('')
 
     const allowedOuts = 10;

@@ -94,6 +94,7 @@ $(() => {
         $("button").each(function () {
             if ($(this).attr('name') === 'Mine') {
                 $(this).css('background', bombImage)
+                $(this).css('color', 'black')
                 $(this).text('.')
             }
         })
@@ -118,6 +119,12 @@ $(() => {
                     blankCellIds.push(currentId);
                 }
             })
+
+            if (allCellsAreRevealed() && !$("#won-message").text()) {
+                $("button").prop('disabled', true);
+                $("#game-body").append(`<h1 id="won-message" style="color:white; font-size:75px"> You Win!!</h1>`)
+                revealMines();
+            }
         }
 
         revealSurroundingCells(id);
