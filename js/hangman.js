@@ -1,6 +1,12 @@
 $(() => {
     const wordsToChooseFrom = ['YUMMY','BEVERAGE', 'SYMPHONY', 'ATTITUDE', 'CONTROL', 'KETCHUP', 'SPRINKLE', 'FLOWER', 'MAGIC', 'COMPUTER', 
-    'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT', 'AWESOME', 'MOSQUITO', 'PLACEMAT', 'STYLE','AQUIRE', 'SQUIRT', 'FILTHY','GHOST','GRASSHOPPER'];
+    'CEREAL', 'BRACELET', 'SLINKY', 'ELEPHANT', 'AWESOME', 'MOSQUITO', 'PLACEMAT', 'STYLE','AQUIRE', 'SQUIRT', 'FILTHY','GHOST','GRASSHOPPER'
+,'WONDERFUL','FASCINATING','SHOES','PROGRAM','PAYMENT','CONNECTION','PILLOW','WATCH','SWEATER','MUSTARD','GIRAFFE',
+'SLINKY','OCTOPUS','GORILLA','CAMERA','MEMORY','INDEX','IMAGE','EXPLORER','REMIND','MONEY','ENGAGEMENT','ENFORCE',
+'EMOJI','JOYOUS','LOCAL','BAKERY','WAITER','LEMONADE','ATMOSPHERE','SHOULDER','CHILDREN','DISABLED','LENGTH',
+'HEIGHT','WEIGHT','INCLUDES','BORDER','BACKGROUND','SAUCE','JUICE','PRETZEL','BREIFCASE','LEATHER','STUDENT',
+'DRASTIC','CHARGE','DISGUISE','BINDER','SOCCER','ALONE','AQUIRE','DESPAIR','AMAZING','FROWN','GRINNING','JUMPER',
+'PARAGRAPH'];
     const hangManWord = wordsToChooseFrom[Math.floor(Math.random() * wordsToChooseFrom.length)].split('')
 
     const allowedOuts = 10;
@@ -12,7 +18,8 @@ $(() => {
     $("body").on("click", ".button-letter", function () {
 
         let guessedLetter = $(this).text();
-        $(this).hide();
+        $(this).prop('disabled', true)
+       // $(this).hide();
 
         if (!hangManWord.includes(guessedLetter)) {
 
