@@ -1,160 +1,209 @@
 $(() => {
-    const mineIds = [];
-    const bombImage = "url('../images/bomb.jpg')";
-    setUpGameBoard();
-    placeMines();
-    calculateQuanitityOfSurroundingMines();
 
-    function calculateQuanitityOfSurroundingMines() {
-        $("button").each(function () {
-            const id = +$(this).attr('id');
-            const surroundingCellIds = getBorderingCellIds(id);
-            const quantityOfSurroundingMines = surroundingCellIds.filter(id => mineIds.includes(id)).length;
-
-            const buttonName = mineIds.includes(id) ? 'Mine' : quantityOfSurroundingMines;
-            buttonName && $(this).attr('name', buttonName)
-        })
+    let boardInfo = {
+        cellsCount: 81,
+        minesCount: 10,
+        columns: 9,
+        rows: 9
     }
 
-    function allCellsAreRevealed() {
-        let allRevealed = true;
+    let boardCells = [];
+    setUpGame();
 
-        $("button").each(function () {
-            if ($(this).attr('name') !== 'Mine' && $(this).css('background-color') === 'rgb(173, 216, 230)') {
-                allRevealed = false;
+    function setUpGame() {
+
+        boardCells = formBoardCells();
+        placeMines();
+        calculateValuesBasedOnSurroundingMines();
+        recreateBoard();
+    }
+
+    $("#easy, #medium, #hard").on('click', function () {
+        const gameLevel = this.id;
+
+        gameLevel === 'easy' && (boardInfo = { cellsCount: 81, minesCount: 10, columns: 9, rows: 9 })
+        gameLevel === 'medium' && (boardInfo = { cellsCount: 256, minesCount: 40, columns: 16, rows: 16 })
+        gameLevel === 'hard' && (boardInfo = { cellsCount: 480, minesCount: 99, columns: 30, rows: 16 })
+
+        setUpGame();
+        $("#message").text('');
+    })
+
+
+    function formBoardCells() {
+        let boardCells = [];
+
+        for (let i = 1; i <= boardInfo.rows; i++) {
+            for (let j = 1; j <= boardInfo.columns; j++) {
+                boardCells.push({
+                    id: `${i}${j}`,
+                    row: i,
+                    column: j,
+                    isRevealed: false,
+                    isBomb: false,
+                    value: 0,
+                    color: 'lightblue',
+                    isDisabled: false,
+                    isFlagged: false
+                })
             }
-        });
-
-        return allRevealed;
-    }
-
-    function getBorderingCellIds(id) {
-        let borderingCellIds = [(id + 10), (id - 10)];
-
-        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        if (id < 9) {
-            borderingCellIds = [...borderingCellIds, `0${id - 1}`, `0${id + 1}`]
-
-        } else if (id > 9 && id <= 19) {
-            borderingCellIds = [...borderingCellIds, `0${id - 10}`, `0${id - 11}`, `0${id - 9}`]
         }
-
-        if (numbers.some(b => id / b === 10) || id === 0) {
-            borderingCellIds = [...borderingCellIds, (id + 1), (id + 11), (id - 9)]
-
-        }
-        else if (numbers.some(b => ((id - 9) / b) === 10) || id === 9) {
-            borderingCellIds = [...borderingCellIds, (id - 1), (id - 11), (id + 9), `0${id - 1}`]
-
-        } else {
-            borderingCellIds = [...borderingCellIds, (id - 11), (id + 11), (id - 1), (id + 1), (id - 9), (id + 9)];
-        }
-
-        return borderingCellIds;
+        return boardCells;
     }
 
     function placeMines() {
-        while (mineIds.length < 10) {
-            let mineId = `${Math.floor(Math.random() * (10) + 0)}${Math.floor(Math.random() * (10) + 0)}`;
+        for (let i = 0; i < boardInfo.minesCount;) {
+            let index = Math.floor(Math.random() * boardCells.length)
 
-            if (!mineIds.includes(+mineId)) {
-                mineIds.push(+mineId)
+            if (!boardCells[index].isBomb) {
+                boardCells[index].isBomb = true;
+                i++;
             }
         }
     }
 
-    function setUpGameBoard() {
-        for (let j = 0; j < 10; j++) {
-            for (let i = 0; i < 10; i++) {
-                $("#game-body").append(`<button id='${j}${i}' style="width:60px; height:60px; font-size:35px; font-family: fantasy; color:lightblue; 
-                background-color:lightblue; border-style:inset; border-color:darkgray">.</button>`)
-            }
+    function calculateValuesBasedOnSurroundingMines() {
 
-            $("#game-body").append('<br/>')
-        }
-    }
-
-    function getTextColor(name) {
-        if (name === '1') {
-            return 'blue'
-        } else if (name === '2') {
-            return 'purple';
-        } else if (name === '3') {
-            return 'green';
-        } else if (name === '4') {
-            return 'orange'
-        } else if (name === '5') {
-            return 'lightgreen'
-        } else {
-            return 'lightgrey'
-        }
-    }
-
-    function revealMines() {
-        $("button").each(function () {
-            if ($(this).attr('name') === 'Mine') {
-                $(this).css('background', bombImage)
-                $(this).css('color', 'black')
-                $(this).text('.')
+        boardCells.forEach(cell => {
+            if (!cell.isBomb) {
+                cell.value = getSurroundingCells(cell.row, cell.column).filter(c => c.isBomb).length;
+                cell.color = getTextColor(cell.value)
             }
         })
     }
 
-    function revealBorderingBlankCells(id) {
-        let surroundingCellIds;
-        let blankCellIds = [];
-        let referenceOfBlankCellIds = [];
+    function getTextColor(value) {
+        let textColor = 'lightgrey';
 
-        const revealSurroundingCells = (id) => {
-            surroundingCellIds = getBorderingCellIds(+id);
-            blankCellIds = blankCellIds.filter(i => i !== id);
+        value === 1 && (textColor = 'blue');
+        value === 2 && (textColor = 'purple');
+        value === 3 && (textColor = 'green');
+        value === 4 && (textColor = 'orange');
+        value === 5 && (textColor = 'lightgreen');
+        value === 6 && (textColor = 'pink');
 
-            surroundingCellIds.forEach(cellId => {
-                let name = $(`#${cellId}`).attr('name');
-                let currentId = $(`#${cellId}`).attr('id');
-                showCellValue(cellId, name)
+        return textColor;
+    }
 
-                if (!name && !referenceOfBlankCellIds.includes(currentId)) {
-                    referenceOfBlankCellIds.push(currentId)
-                    blankCellIds.push(currentId);
-                }
-            })
+    function getCellDimenstions() {
+        if (boardInfo.cellsCount === 81) {
+            return '50px';
+        }
+        return boardInfo.cellsCount === 256 ? '35px' : '30px'
+    }
 
-            if (allCellsAreRevealed() && !$("#won-message").text()) {
-                $("button").prop('disabled', true);
-                $("#game-body").append(`<h1 id="won-message" style="color:white; font-size:75px"> You Win!!</h1>`)
-                revealMines();
+    function getFontSize() {
+        if (boardInfo.cellsCount === 81) {
+            return '30px';
+        }
+        return boardInfo.cellsCount === 256 ? '20px' : '18px'
+    }
+
+    function setUpGameBoard() {
+        const cellDimensions = getCellDimenstions();
+        const fontSize = getFontSize();
+
+        boardCells.forEach((cell, idx) => {
+            $("#game-body").append(
+                `<button 
+                id=${idx} 
+                ${cell.isDisabled && 'disabled'}
+                style="padding:0px;
+                       width:${cellDimensions}; 
+                       height:${cellDimensions}; 
+                       font-size:${fontSize}; 
+                       font-family: fantasy;
+                       color:${getCellColor(cell)}; 
+                       background-color:${cell.isRevealed ? 'lightgrey' : 'lightblue'}; 
+                       border-style:inset; 
+                       border-color:darkgray;">
+                       ${getButtonText(cell)}
+                 </button>`)
+
+            if (cell.column === boardInfo.columns) {
+                $("#game-body").append('<br/>')
             }
+        })
+    }
+
+    function getCellColor(cell) {
+        if (cell.isRevealed) {
+            return cell.color
+        }
+        return cell.isFlagged ? 'red' : 'lightblue';
+    }
+
+    function getButtonText(cell) {
+        if (cell.isBomb && cell.isRevealed) {
+            return '<img src="/images/bomb.jpg" style="width:inherit; height:inherit;" />'
+        }
+        return cell.isFlagged ? '?' : cell.value;
+    }
+
+    function getSurroundingCells(row, column) {
+        return boardCells.filter(c => (c.column === column || c.column === column + 1 || c.column === column - 1) &&
+            (c.row === row || c.row === row + 1 || c.row === row - 1));
+    }
+
+    function recreateBoard() {
+
+        $("#game-body").remove();
+        $("#game-board").append(`<div class="text-center" id="game-body">`)
+        setUpGameBoard();
+    }
+
+    $('#game-board').on("contextmenu", function () { return false });
+
+    $("#game-board").on('auxclick', 'button', function (e) {
+        let id = $(this).attr('id');
+        let currentCell = boardCells[id];
+        if (currentCell.isDisabled) {
+            return;
+        }
+        currentCell.isFlagged = !currentCell.isFlagged;
+        recreateBoard();
+    })
+
+    $("#game-board").on('click', 'button', function () {
+        let id = $(this).attr('id');
+        let currentCell = boardCells[id];
+
+        (!currentCell.value && !currentCell.isBomb) && revealSurroundingSection(currentCell)
+
+        currentCell.isDisabled = true;
+        currentCell.isRevealed = true;
+
+        if (currentCell.isBomb || boardCells.every(c => c.isBomb || (!c.isBomb && c.isRevealed))) {
+            boardCells.forEach(c => { c.isDisabled = true })
+            boardCells.filter(c => c.isBomb).forEach(c => { c.isRevealed = true })
+            $("#message").text(currentCell.isBomb ? 'Game Over!' : 'You Win!!')
         }
 
-        revealSurroundingCells(id);
+        recreateBoard();
+    })
 
-        while (blankCellIds.length) {
-            blankCellIds.forEach(id => {
-                revealSurroundingCells(id)
+
+    function revealSurroundingSection(cell) {
+
+        let cellsWithoutValues = [];
+
+        const revealSurroundingCells = (cell) => {
+            cellsWithoutValues = cellsWithoutValues.filter(c => c.id != cell.id)
+
+            let surroundingCells = getSurroundingCells(cell.row, cell.column);
+
+            surroundingCells.forEach(cell => {
+                (!cell.value && !cell.isRevealed) && cellsWithoutValues.push(cell);
+                cell.isRevealed = true;
             })
         }
-    }
 
+        revealSurroundingCells(cell);
 
-    function showCellValue(cellId, name) {
-        $(`#${cellId}`).text(name);
-        $(`#${cellId}`).css('color', getTextColor(name))
-        $(`#${cellId}`).css('background-color', 'lightgray')
-        $(`#${cellId}`).prop('disabled', true)
-    }
-
-    $("button").on('click', function () {
-        let name = $(this).attr('name')
-        let id = $(this).attr('id');
-        showCellValue(id, name)
-
-        if (name === 'Mine' || allCellsAreRevealed()) {
-            $("button").prop('disabled', true);
-            $("#game-body").append(`<h1 style="color:white; font-size:75px"> ${name === 'Mine' ? 'Game Over!' : 'You Win!!'}</h1>`)
-            revealMines();
+        while (cellsWithoutValues.length) {
+            cellsWithoutValues.forEach(cell => { revealSurroundingCells(cell) })
         }
-
-        !name && revealBorderingBlankCells(+id)
-    })
+    }
 })
+
+
