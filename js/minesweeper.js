@@ -137,7 +137,7 @@ $(() => {
         if (cell.isBomb && cell.isRevealed) {
             return '<img src="/images/bomb.jpg" style="width:inherit; height:inherit;" />'
         }
-        return cell.isFlagged ? '?' : cell.value;
+        return cell.isFlagged && !cell.isRevealed ? '?' : cell.value;
     }
 
     function getSurroundingCells(row, column) {
@@ -172,8 +172,6 @@ $(() => {
 
         currentCell.isDisabled = true;
         currentCell.isRevealed = true;
-        currentCell.isFlagged = false;
-        
 
         if (currentCell.isBomb || boardCells.every(c => c.isBomb || (!c.isBomb && c.isRevealed))) {
             boardCells.forEach(c => { c.isDisabled = true })
