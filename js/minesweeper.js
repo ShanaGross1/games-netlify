@@ -172,6 +172,8 @@ $(() => {
 
         currentCell.isDisabled = true;
         currentCell.isRevealed = true;
+        currentCell.isFlagged = false;
+        
 
         if (currentCell.isBomb || boardCells.every(c => c.isBomb || (!c.isBomb && c.isRevealed))) {
             boardCells.forEach(c => { c.isDisabled = true })
