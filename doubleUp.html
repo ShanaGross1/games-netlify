@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-black fs-4 border-bottom box-shadow mb-3">
+            <div class="container-fluid" style="background-color:black">
+                <a class="navbar-brand text-white fs-3" href="index.html">Games R Us</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="mastermind.html">Mastermind</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="memory.html">Memory</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="hangman.html">Hangman</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="minesweeper.html">Minesweeper</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="doubleUp.html">Double Up</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <body style="background-color:black">
+
+        <div class="justify-content-between d-flex mb-2 mt-5">
+            <button class=" m-0 btn" id="show-modal" style="width:150px; height:60px; background-color:black; border:2px solid white; color:white; font-family:fantasy; font-size:25px;">Game Rules</button>
+    
+            <h1 class="m-0" style="font-size:75px; font-family:fantasy; align-content:center">
+                <span style="color:lawngreen">D</span>
+                <span style="color:deeppink">O</span>
+                <span style="color:deepskyblue">U</span>
+                <span style="color:yellow">B</span>
+                <span style="color:darkgrey">L</span>
+                <span style="color:mediumpurple; margin-right:30px;">E </span>
+                <span style="color:hotpink">U</span>
+                <span style="color:goldenrod">P</span>
+            </h1>
+            <span style="color:black">---------</span>
+        </div>
+    
+        <div class="mb-5" style="text-align:center; align-content:center">
+            <button class="btn" style="width:150px; height:50px; background-color:black; border:2px solid white; color:lawngreen; font-family:fantasy; font-size:25px;" id="right">Right</button>
+            <button class="btn" style="width:150px; height:50px; background-color:black; border:2px solid white; color:deeppink; font-family:fantasy; font-size:25px;" id="left">Left</button>
+            <button class="btn" style="width:150px; height:50px; background-color:black; border:2px solid white; color:deepskyblue; font-family:fantasy; font-size:25px;" id="up">Up</button>
+            <button class="btn" style="width:150px; height:50px; background-color:black; border:2px solid white; color:yellow; font-family:fantasy; font-size:25px;" id="down">Down</button>
+        </div>
+    
+        <div id="game-board">
+            <h1 id="message" style="color:white; font-size:55px; align-content:center; text-align:center"></h1>
+            <div id="game-body" style=" margin:auto; height:fit-content; width:fit-content;">
+            </div>
+        </div>
+    
+        <div class="modal fade" id="demo-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Game Rules</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-md-12 bg-light rounded-3 p-5">
+                            <h1>How To Play:</h1>
+                            <p style="font-size:20px;">
+                                Use the arrows on the keyboard, or the buttons on the page to combine like numbers to make doubles. With every click, an additional number is added to the board.
+                                Keep going until you reach 1024! The game is over when the board is full and there are no adjacent numbers with the same value. Good Luck!!
+                            </p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    <script src="js/doubleUp.js" asp-append-version="true"></script>
+</body>
+</html>
