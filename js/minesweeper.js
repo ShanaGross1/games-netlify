@@ -107,7 +107,7 @@ $(() => {
             $("#game-body").append(
                 `<button 
                 id=${idx} 
-                ${cell.isDisabled && 'disabled'}
+                ${cell.isDisabled || cell.isFlagged && 'disabled'}
                 style="padding:0px;
                        width:${cellDimensions}; 
                        height:${cellDimensions}; 
