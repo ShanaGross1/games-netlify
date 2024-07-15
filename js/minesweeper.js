@@ -117,7 +117,8 @@ $(() => {
                        background-color:${cell.isRevealed ? 'lightgrey' : 'lightblue'}; 
                        border-style:inset; 
                        border-color:darkgray;">
-                       ${getButtonText(cell)}
+                                              ${isRevealed  || isFlagged ? getButtonText(cell) : "."}
+
                  </button>`)
 
             if (cell.column === boardInfo.columns) {
