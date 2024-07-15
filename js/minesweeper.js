@@ -27,12 +27,15 @@ $(() => {
 
         setUpGame();
         $("#message").text('');
+        $("#revealSection").prop('disabled', false)
+        $("#revealValue").prop('disabled', false)
+
+
     })
 
-
+    
     function formBoardCells() {
         let boardCells = [];
-
         for (let i = 1; i <= boardInfo.rows; i++) {
             for (let j = 1; j <= boardInfo.columns; j++) {
                 boardCells.push({
@@ -41,8 +44,7 @@ $(() => {
                     column: j,
                     isRevealed: false,
                     isBomb: false,
-                    value: 0,
-                    color: 'lightblue',
+                    value: '',
                     isDisabled: false,
                     isFlagged: false
                 })
@@ -51,9 +53,13 @@ $(() => {
         return boardCells;
     }
 
+    function getRandomNumberInRange() {
+        return Math.floor(Math.random() * boardCells.length);
+    }
+
     function placeMines() {
         for (let i = 0; i < boardInfo.minesCount;) {
-            let index = Math.floor(Math.random() * boardCells.length)
+            let index = getRandomNumberInRange();
 
             if (!boardCells[index].isBomb) {
                 boardCells[index].isBomb = true;
@@ -66,7 +72,7 @@ $(() => {
 
         boardCells.forEach(cell => {
             if (!cell.isBomb) {
-                cell.value = getSurroundingCells(cell.row, cell.column).filter(c => c.isBomb).length;
+                cell.value = getSurroundingCells(cell.row, cell.column).filter(c => c.isBomb).length || '';
                 cell.color = getTextColor(cell.value)
             }
         })
@@ -104,34 +110,28 @@ $(() => {
         const fontSize = getFontSize();
 
         boardCells.forEach((cell, idx) => {
+            const { isDisabled, isFlagged, isRevealed, column, color } = cell
             $("#game-body").append(
                 `<button 
                 id=${idx} 
-                ${(cell.isDisabled || cell.isFlagged) && 'disabled'}
+                ${(isDisabled || isFlagged) && 'disabled'}
                 style="padding:0px;
                        width:${cellDimensions}; 
                        height:${cellDimensions}; 
                        font-size:${fontSize}; 
                        font-family: fantasy;
-                       color:${getCellColor(cell)}; 
-                       background-color:${cell.isRevealed ? 'lightgrey' : 'lightblue'}; 
+                       color:${isFlagged ? 'red' : color}; 
+                       background-color:${isRevealed ? 'lightgrey' : 'lightblue'}; 
                        border-style:inset; 
+                       vertical-align: top;
                        border-color:darkgray;">
-                                              ${cell.isRevealed  || cell.isFlagged ? getButtonText(cell) : "."}
-
+                       ${isRevealed || isFlagged ? getButtonText(cell) : ""}
                  </button>`)
 
-            if (cell.column === boardInfo.columns) {
+            if (column === boardInfo.columns) {
                 $("#game-body").append('<br/>')
             }
         })
-    }
-
-    function getCellColor(cell) {
-        if (cell.isRevealed) {
-            return cell.color
-        }
-        return cell.isFlagged ? 'red' : 'lightblue';
     }
 
     function getButtonText(cell) {
@@ -165,14 +165,14 @@ $(() => {
         recreateBoard();
     })
 
-    $("#game-board").on('click', 'button', function () {
-        let id = $(this).attr('id');
-        let currentCell = boardCells[id];
+    function doClickAction(cellId) {
+        let currentCell = boardCells[cellId];
 
         (!currentCell.value && !currentCell.isBomb) && revealSurroundingSection(currentCell)
 
         currentCell.isDisabled = true;
         currentCell.isRevealed = true;
+        console.log('current cell: ' + currentCell.id, currentCell.isRevealed)
 
         if (currentCell.isBomb || boardCells.every(c => c.isBomb || (!c.isBomb && c.isRevealed))) {
             boardCells.forEach(c => { c.isDisabled = true })
@@ -181,6 +181,12 @@ $(() => {
         }
 
         recreateBoard();
+    }
+
+    $("#game-board").on('click', 'button', function () {
+
+        const cellId = $(this).attr('id');
+        doClickAction(cellId);
     })
 
 
