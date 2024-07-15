@@ -117,7 +117,7 @@ $(() => {
                        background-color:${cell.isRevealed ? 'lightgrey' : 'lightblue'}; 
                        border-style:inset; 
                        border-color:darkgray;">
-                                              ${isRevealed  || isFlagged ? getButtonText(cell) : "."}
+                                              ${cell.isRevealed  || cell.isFlagged ? getButtonText(cell) : "."}
 
                  </button>`)
 
