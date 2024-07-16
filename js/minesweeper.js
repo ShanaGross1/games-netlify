@@ -11,7 +11,6 @@ $(() => {
     setUpGame();
 
     function setUpGame() {
-
         boardCells = formBoardCells();
         placeMines();
         calculateValuesBasedOnSurroundingMines();
@@ -29,11 +28,31 @@ $(() => {
         $("#message").text('');
         $("#revealSection").prop('disabled', false)
         $("#revealValue").prop('disabled', false)
-
-
     })
 
-    
+    $("#revealValue").on('click', function () {
+        const cellWithValueIndex = boardCells.findIndex(c => !c.isRevealed && c.value && !c.isBomb);
+        if (cellWithValueIndex === -1) {
+            return;
+        }
+        doClickAction(cellWithValueIndex)
+    })
+
+    $("#revealSection").on('click', function () {
+        const blankCellIndex = boardCells.findIndex(c => !c.isRevealed && !c.value && !c.isBomb);
+
+        if (blankCellIndex === -1) {
+            $("#revealSection").prop('disabled', true)
+            return
+        }
+        doClickAction(blankCellIndex)
+    })
+
+    function setFlagCount() {
+        const flagCount = boardCells.filter(c => c.isFlagged).length;
+        $("#flagCount").text(flagCount)
+    }
+
     function formBoardCells() {
         let boardCells = [];
         for (let i = 1; i <= boardInfo.rows; i++) {
@@ -83,10 +102,12 @@ $(() => {
 
         value === 1 && (textColor = 'blue');
         value === 2 && (textColor = 'purple');
-        value === 3 && (textColor = 'green');
-        value === 4 && (textColor = 'orange');
-        value === 5 && (textColor = 'lightgreen');
-        value === 6 && (textColor = 'pink');
+        value === 3 && (textColor = 'darkgreen');
+        value === 4 && (textColor = 'red');
+        value === 5 && (textColor = 'darkorange');
+        value === 6 && (textColor = 'hotpink');
+        value === 7 && (textColor = 'brown');
+        value === 8 && (textColor = 'grey');
 
         return textColor;
     }
@@ -108,30 +129,31 @@ $(() => {
     function setUpGameBoard() {
         const cellDimensions = getCellDimenstions();
         const fontSize = getFontSize();
+        let html = '';
 
         boardCells.forEach((cell, idx) => {
-            const { isDisabled, isFlagged, isRevealed, column, color } = cell
-            $("#game-body").append(
-                `<button 
+            html += `<button 
                 id=${idx} 
-                ${(isDisabled || isFlagged) && 'disabled'}
+                ${(cell.isDisabled || cell.isFlagged) && 'disabled'}
                 style="padding:0px;
                        width:${cellDimensions}; 
                        height:${cellDimensions}; 
                        font-size:${fontSize}; 
-                       font-family: fantasy;
-                       color:${isFlagged ? 'red' : color}; 
-                       background-color:${isRevealed ? 'lightgrey' : 'lightblue'}; 
+                       font-weight:bold;
+                       color:${cell.isFlagged ? 'red' : cell.color}; 
+                       background-color:${cell.isRevealed ? 'lightgrey' : 'grey'}; 
                        border-style:inset; 
                        vertical-align: top;
                        border-color:darkgray;">
-                       ${isRevealed || isFlagged ? getButtonText(cell) : ""}
-                 </button>`)
+                       ${cell.isRevealed || cell.isFlagged ? getButtonText(cell) : ""}
+                 </button>`
 
-            if (column === boardInfo.columns) {
-                $("#game-body").append('<br/>')
+            if (cell.column === boardInfo.columns) {
+                html += '<br/>'
             }
         })
+
+        $("#game-body").append(html)
     }
 
     function getButtonText(cell) {
@@ -162,6 +184,7 @@ $(() => {
             return;
         }
         currentCell.isFlagged = !currentCell.isFlagged;
+        setFlagCount()
         recreateBoard();
     })
 
@@ -172,7 +195,6 @@ $(() => {
 
         currentCell.isDisabled = true;
         currentCell.isRevealed = true;
-        console.log('current cell: ' + currentCell.id, currentCell.isRevealed)
 
         if (currentCell.isBomb || boardCells.every(c => c.isBomb || (!c.isBomb && c.isRevealed))) {
             boardCells.forEach(c => { c.isDisabled = true })
@@ -191,7 +213,6 @@ $(() => {
 
 
     function revealSurroundingSection(cell) {
-
         let cellsWithoutValues = [];
 
         const revealSurroundingCells = (cell) => {
