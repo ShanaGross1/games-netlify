@@ -41,19 +41,34 @@
         </nav>
     </header>
 
-  <body style="background-color:blue">
-    <button id="easy" class="btn btn-info" style="width:100px"> Easy: 9*9    10 Mines</button>
-    <button id="medium" class="btn btn-warning" style="width:140px"> Medium: 16*16  40 Mines</button>
-    <button id="hard" class="btn btn-danger" style="width:120px"> Hard: 30*16   99 Mines</button>
-
-    <div class=" align-content-center" id="game-board">
-
-        <h1 class="text-center" style="color:white;font-size:75px">MINESWEEPER</h1>
-        <div class="text-center" id="game-body">
+    <body style="background-color:black; font-family:cursive">
+        <div class="justify-content-between d-flex " style="margin:0px; background-color:black; width:1400px;">
+            <div>
+                <button id="easy" class="btn" style="width:200px; background-color:black; color:red; border-color:red; font-weight:bold; margin-bottom:8px;">Easy: 9*9<br /> 10 Mines</button>
+                <br />
+                <button id="medium" class="btn" style="width:200px; background-color:black; color:yellow; border-color:yellow;margin-bottom:8px;">Medium: 16*16 <br /> 40 Mines</button>
+                <br />
+                <button id="hard" class="btn" style="width:200px; background-color:black; color:lawngreen; border-color:lawngreen">Hard: 30*16 <br />99 Mines</button>
+                <br />
+            </div>
+    
+            <div class=" align-content-center" id="game-board">
+                <h1 class="text-center" style="color:black;font-size:75px; font-weight:bold; font-family:cursive; -webkit-text-stroke-color:white; -webkit-text-stroke-width:3px;">MINESWEEPER</h1>
+                <div class="text-center" id="game-body">
+                </div>
+            </div>
+            <div>
+    
+                <h1 style="color:white">Flag Count: <span id="flagCount">0</span></h1>
+                <button id="revealSection" class="btn" style="width:200px; background-color:black; color:deepskyblue    ; border-color:deepskyblue;margin-bottom:8px;">Reveal Section</button>
+                <br />
+                <button id="revealValue" class="btn" style="width:200px; background-color:black; color:mediumpurple; border-color:mediumpurple">Reveal Value</button> <br />
+                <br />
+            </div>
         </div>
-    </div>
-    <h1 id="message" class="text-center" style="color:white;font-size:55px"></h1>
-</body>
+        <br />
+        <h1 id="message" class="text-center" style="color:white;font-size:55px"></h1>
+    </body>
 
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
