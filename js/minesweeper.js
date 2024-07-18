@@ -1,4 +1,6 @@
 $(() => {
+    const messages = ['You can do this, Shira!!', 'Shira is awesome!!', 'Good luck, Shira!!', `You can beat this!!`,
+        'Shira is ONE in a MILLION!!', 'Best of luck, Shira!!', 'Go Shira Go!!!']
 
     let boardInfo = {
         cellsCount: 81,
@@ -16,36 +18,38 @@ $(() => {
         calculateValuesBasedOnSurroundingMines();
         recreateBoard();
     }
-
-    $("#easy, #medium, #hard").on('click', function () {
+    
+    $("#easy, #medium, #hard, #expert").on('click', function () {
         const gameLevel = this.id;
 
         gameLevel === 'easy' && (boardInfo = { cellsCount: 81, minesCount: 10, columns: 9, rows: 9 })
         gameLevel === 'medium' && (boardInfo = { cellsCount: 256, minesCount: 40, columns: 16, rows: 16 })
-        gameLevel === 'hard' && (boardInfo = { cellsCount: 480, minesCount: 99, columns: 30, rows: 16 })
+        gameLevel === 'hard' && (boardInfo = { cellsCount: 480, minesCount: 70, columns: 28, rows: 16 })
+        gameLevel === 'expert' && (boardInfo = { cellsCount: 480, minesCount: 99, columns: 30, rows: 16 })
+
 
         setUpGame();
-        $("#message").text('');
+        $("#message").text(messages[getRandomNumberInRange(messages.length)]);
         $("#revealSection").prop('disabled', false)
         $("#revealValue").prop('disabled', false)
     })
 
     $("#revealValue").on('click', function () {
-        const cellWithValueIndex = boardCells.findIndex(c => !c.isRevealed && c.value && !c.isBomb);
-        if (cellWithValueIndex === -1) {
+        const indexOfCellWithValue = boardCells.findIndex(c => !c.isRevealed && c.value && !c.isBomb);
+        if (indexOfCellWithValue === -1) {
             return;
         }
-        doClickAction(cellWithValueIndex)
+        doClickAction(indexOfCellWithValue)
     })
 
     $("#revealSection").on('click', function () {
-        const blankCellIndex = boardCells.findIndex(c => !c.isRevealed && !c.value && !c.isBomb);
+        const indexOfBlankCell = boardCells.findIndex(c => !c.isRevealed && !c.value && !c.isBomb);
 
-        if (blankCellIndex === -1) {
+        if (indexOfBlankCell === -1) {
             $("#revealSection").prop('disabled', true)
             return
         }
-        doClickAction(blankCellIndex)
+        doClickAction(indexOfBlankCell)
     })
 
     function setFlagCount() {
@@ -72,13 +76,13 @@ $(() => {
         return boardCells;
     }
 
-    function getRandomNumberInRange() {
-        return Math.floor(Math.random() * boardCells.length);
+    function getRandomNumberInRange(listLength) {
+        return Math.floor(Math.random() * listLength);
     }
 
     function placeMines() {
         for (let i = 0; i < boardInfo.minesCount;) {
-            let index = getRandomNumberInRange();
+            let index = getRandomNumberInRange(boardCells.length);
 
             if (!boardCells[index].isBomb) {
                 boardCells[index].isBomb = true;
@@ -145,7 +149,7 @@ $(() => {
                        border-style:inset; 
                        vertical-align: top;
                        border-color:darkgray;">
-                       ${cell.isRevealed || cell.isFlagged ? getButtonText(cell) : ""}
+                       ${cell.isRevealed || cell.isFlagged ? getButtonText(cell) : ""} 
                  </button>`
 
             if (cell.column === boardInfo.columns) {
