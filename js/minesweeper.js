@@ -18,7 +18,7 @@ $(() => {
         calculateValuesBasedOnSurroundingMines();
         recreateBoard();
     }
-    
+
     $("#easy, #medium, #hard, #expert").on('click', function () {
         const gameLevel = this.id;
 
@@ -184,7 +184,8 @@ $(() => {
     $("#game-board").on('auxclick', 'button', function (e) {
         let id = $(this).attr('id');
         let currentCell = boardCells[id];
-        if (currentCell.isDisabled) {
+
+        if (currentCell.isDisabled || currentCell.isRevealed) {
             return;
         }
         currentCell.isFlagged = !currentCell.isFlagged;
