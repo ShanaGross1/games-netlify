@@ -76,7 +76,7 @@ $(() => {
                             float:left;
                             font-size:40px;
                             border: 1px solid black;
-                            font-family:fantasy;
+                            
                             background-color:${getCellColor(cell.value)}" >${cell.value}</button > `
                 )
 
