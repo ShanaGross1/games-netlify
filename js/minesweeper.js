@@ -1,6 +1,6 @@
 $(() => {
     const messages = ['You can do this, Shira!!', 'Shira is awesome!!', 'Good luck, Shira!!', `You can beat this!!`,
-        'Shira is ONE in a MILLION!!', 'Best of luck, Shira!!', 'Go Shira Go!!!']
+        'Shira is ONE in a MILLION!!', 'Best of luck, Shira!!', 'Go Shira Go!!!', 'We love Shira!!', 'You can do this, Vivi!']
 
     let boardInfo = {
         cellsCount: 81,
@@ -18,7 +18,7 @@ $(() => {
         calculateValuesBasedOnSurroundingMines();
         recreateBoard();
     }
-
+    
     $("#easy, #medium, #hard, #expert").on('click', function () {
         const gameLevel = this.id;
 
@@ -30,6 +30,7 @@ $(() => {
 
         setUpGame();
         $("#message").text(messages[getRandomNumberInRange(messages.length)]);
+        $("#flagCount").text(0)
         $("#revealSection").prop('disabled', false)
         $("#revealValue").prop('disabled', false)
     })
@@ -144,7 +145,7 @@ $(() => {
                        height:${cellDimensions}; 
                        font-size:${fontSize}; 
                        font-weight:bold;
-                       color:${cell.isFlagged ? 'red' : cell.color}; 
+                       color:${cell.isFlagged && !cell.isRevealed? 'red' : cell.color}; 
                        background-color:${cell.isRevealed ? 'lightgrey' : 'grey'}; 
                        border-style:inset; 
                        vertical-align: top;
@@ -184,7 +185,6 @@ $(() => {
     $("#game-board").on('auxclick', 'button', function (e) {
         let id = $(this).attr('id');
         let currentCell = boardCells[id];
-
         if (currentCell.isDisabled || currentCell.isRevealed) {
             return;
         }
